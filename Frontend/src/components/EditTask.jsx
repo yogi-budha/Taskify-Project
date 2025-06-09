@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useDeleteTaskMutation, useUpdateTaskMutation } from '../store/api';
 
 
 const EditTask = ({ setShowEditTask, taskToEdit }) => {
   const [formField, setFormField] = useState({
-    title: '',
-    description: '',
-    status: '',
-    priority: '',
-    id: null,
+    title: taskToEdit.title,
+    description: taskToEdit.description,
+    status: taskToEdit.status,
+    priority: taskToEdit.priority,
   });
-
-  useEffect(() => {
-    if (taskToEdit) {
-      setFormField(taskToEdit);
-    }
-  }, [taskToEdit]);
 
   const onChangeHandler = (e) => {
     setFormField((prev) => ({
@@ -22,6 +16,10 @@ const EditTask = ({ setShowEditTask, taskToEdit }) => {
       [e.target.name]: e.target.value,
     }));
   };
+
+
+  const [deleteTask] = useDeleteTaskMutation()
+  const [updateTask] = useUpdateTaskMutation()
 
 
 
@@ -86,7 +84,6 @@ const EditTask = ({ setShowEditTask, taskToEdit }) => {
             />
           </div>
 
-          {/* Buttons */}
           <div className="flex justify-between gap-3 pt-4">
             <button
               type="button"
@@ -99,12 +96,13 @@ const EditTask = ({ setShowEditTask, taskToEdit }) => {
             <button
               type="button"
               className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 text-sm"
-                onClick={() => setShowEditTask(false)}
+                onClick={() => (deleteTask(taskToEdit.id),setShowEditTask(false))}
             >
               Delete
             </button>
 
             <button
+            onClick={() => (updateTask({id:taskToEdit.id,...formField}),setShowEditTask(false))}
               type="submit"
               className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm"
          

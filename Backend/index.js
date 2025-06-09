@@ -1,3 +1,6 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 import express from 'express'
 import connectDB from './db/connectDB.js'
 import { Task } from './models/task.schema.js'
@@ -5,6 +8,8 @@ import cors from "cors"
 const app = express()
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
+
 app.use(cors())
 
 app.get("/",(req,res)=>{
@@ -51,7 +56,7 @@ app.delete("/api/v1/task/:id",async(req,res)=>{
 
     try {
         
-        await Task.findByIdAndDelete(id)
+        await Task.findByIdAndDelete({_id:id})
 
         
         return res.status(200).json({message:"Deleted Successfully"})
@@ -76,11 +81,16 @@ app.get("/api/v1/task/:id",async(req,res)=>{
 })
 
 app.put("/api/v1/task/:id",async(req,res)=>{
-    const {title,description,priority,status} = req.body
+    
     const {id} = req.params
 
+    console.log(req.body,id)
+    const {title,description,priority,status} = req.body
+
+
     try {
-        const task = await Task.findByIdAndUpdate(id,{title,description,priority,status})
+        const task = await Task.findByIdAndUpdate(id,{title,description,priority,status},{new:true})
+        console.log(task)
 
         return res.status(200).json({message:"successfully updated the task",task})
         

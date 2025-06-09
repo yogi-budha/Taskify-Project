@@ -9,11 +9,8 @@ import { Provider } from 'react-redux'
 
  const store = configureStore({
   reducer: {
-    // Add the generated reducer as a specific top-level slice
     [taskifyApi.reducerPath]: taskifyApi.reducer,
   },
-  // Adding the api middleware enables caching, invalidation, polling,
-  // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(taskifyApi.middleware),
 })

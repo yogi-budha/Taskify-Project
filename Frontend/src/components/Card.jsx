@@ -1,8 +1,10 @@
 
 
-const Card = (  {title, priority, description,setShowEditTask}) => {
+const Card = (  {id,title, priority, description,setShowEditTask,setClickData,status}) => {
+ 
+
   return (
-    <div onClick={() => setShowEditTask(true)} className="p-4">
+    <div key={id} onClick={() =>( setClickData({id,title,priority,description,status}),setShowEditTask(true))} className="p-4">
       <div className="bg-white rounded-2xl shadow-md p-4 space-y-2">
         <div className="flex justify-between items-center">
           <p className="text-lg font-semibold text-gray-800">{title}</p>

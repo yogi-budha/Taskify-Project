@@ -1,13 +1,15 @@
 
-import { useState } from 'react'
-import Home from './pages/Home'
+import { lazy, Suspense, useState } from 'react'
+import Loader from './components/Loader'
+
+const Home = lazy(()=>import("./pages/Home"))
 
 function App() {
   const [showAddTask,setShowAddTask] = useState(false)
   return (
-    <>
+    <Suspense fallback={<Loader/>}>
     <Home showAddTask={showAddTask} setShowAddTask={setShowAddTask}/>
-    </>
+    </Suspense>
   )
 }
 

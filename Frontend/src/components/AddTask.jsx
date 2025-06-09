@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import {task} from '../../task'
+
+import { useCreateTaskMutation } from '../store/api'
 
 const AddTask = ({setShowAddTask}) => {
+  const [creatingPost] =  useCreateTaskMutation()
 
-  const [taskval,setTaskval] = useState(task)
+
   const [formField,setFormField] = useState({
     title:"",description:"",status:"",priority:""
   })
@@ -11,17 +13,15 @@ const AddTask = ({setShowAddTask}) => {
 
   const handleAddToTask = (e)=>{
     e.preventDefault()
-    console.log(formField)
-    setTaskval((prev)=>({...prev,prev}))
-    console.log(taskval)
+    creatingPost(formField)
+    setShowAddTask(false)
 
   }
 
   const onChangeHandler = (e)=>{
-    setFormField((prev)=>({ ...prev, [e.target.name]: e.target.value ,id:task.length}))
-
-
+    setFormField((prev)=>({ ...prev, [e.target.name]: e.target.value }))
   }
+
   return (
     <div className="fixed inset-0  flex justify-center items-center z-50">
       <div className="bg-slate-700 rounded-2xl shadow-2xl w-[90%] max-w-md p-6">
@@ -55,9 +55,9 @@ const AddTask = ({setShowAddTask}) => {
                 <option value="" disabled>
                   Select Priority
                 </option>
-                <option value="High">High</option>
-                <option value="Medium">Medium</option>
-                <option value="Low">Low</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
               </select>
             </div>
 
@@ -73,7 +73,7 @@ const AddTask = ({setShowAddTask}) => {
                 <option value="" disabled>
                   Select Status
                 </option>
-                <option value="Yet-to-do">Yet To Start</option>
+                <option value="yet-to-do">Yet To Start</option>
                 <option value="process">In Process</option>
                 <option value="completed">Completed</option>
               </select>

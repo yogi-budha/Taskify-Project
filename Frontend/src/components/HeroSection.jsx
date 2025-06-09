@@ -6,10 +6,12 @@ import { useGetTasksQuery } from "../store/api";
 
 const HeroSection = ({ showAddTask, setShowAddTask }) => {
   const [ showEditTask,setShowEditTask] = useState(false)
+  const [clickData,setClickData]=useState()
   const statuses = ["yet-to-do", "process", "completed"];
 
   const {data,error,isLoading} = useGetTasksQuery()
 
+console.log(clickData)
   return (
     <div className="relative text-white px-4 pt-20 pb-10 min-h-screen bg-gray-700">
       {showAddTask && (
@@ -29,7 +31,7 @@ const HeroSection = ({ showAddTask, setShowAddTask }) => {
 
           <div className="fixed inset-0 flex justify-center items-center z-50 px-4">
             <div className="w-full max-w-md  p-6 rounded-lg shadow-2xl">
-              <EditTask setShowEditTask={setShowEditTask} />
+              <EditTask taskToEdit={clickData} setShowEditTask={setShowEditTask} />
             </div>
           </div>
         </>
@@ -55,12 +57,17 @@ const HeroSection = ({ showAddTask, setShowAddTask }) => {
                 .filter((item) => item.status === status)
                 .map((data) => (
                   <Card
-                    key={data.id }
+                    key={data._id }
                     title={data.title}
                     priority={data.priority}
                     description={data.description}
+                    status={data.status}
+                    id={data._id}
                     setShowEditTask={setShowEditTask}
+                    setClickData={setClickData}
                   />
+
+                  // console.log(data)
                 ))}
             </div>
           ))}
